@@ -10,10 +10,10 @@ Globals:
                 APP_STORAGE: '/tmp'
 
 Resources:
-    MyFunction:
+    HomePage:
         Type: AWS::Serverless::Function
         Properties:
-            FunctionName: 'my-function'
+            FunctionName: 'homepage'
             Description: ''
             CodeUri: .
             Handler: public/index.php
