@@ -1,3 +1,14 @@
+<?php
+
+    use App\Posts;
+
+    $posts = Posts::all();
+
+    foreach ($posts as $post) {
+    ?><pre><?php print_r($post->body); ?></pre><?php
+    }
+?>
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
