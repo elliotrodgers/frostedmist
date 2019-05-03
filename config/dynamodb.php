@@ -27,18 +27,18 @@ return [
     'connections' => [
         'aws' => [
             'credentials' => [
-                'key' => env('DYNAMODB_KEY'),
-                'secret' => env('DYNAMODB_SECRET'),
+                'key' => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
                 // If using as an assumed IAM role, you can also use the `token` parameter
                 'token' => env('AWS_SESSION_TOKEN'),
             ],
-            'region' => env('DYNAMODB_REGION'),
+            'region' => env('AWS_DEFAULT_REGION'),
              // if true, it will use Laravel Log.
              // For advanced options, see http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/configuration.html
             'debug' => env('DYNAMODB_DEBUG'),
         ],
         'aws_iam_role' => [
-            'region' => env('DYNAMODB_REGION'),
+            'region' => env('AWS_DEFAULT_REGION'),
             'debug' => true,
         ],
         'local' => [
@@ -47,8 +47,7 @@ return [
                 'secret' => 'secret',
             ],
             'region' => 'stub',
-             // see http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html
-            'endpoint' => env('DYNAMODB_LOCAL_ENDPOINT'),
+            'endpoint' => 'http://localhost:8000',
             'debug' => true,
         ],
         'test' => [
@@ -57,7 +56,7 @@ return [
                 'secret' => 'secret',
             ],
             'region' => 'test',
-            'endpoint' => env('DYNAMODB_LOCAL_ENDPOINT'),
+            'endpoint' => 'http://localhost:8000',
             'debug' => true,
         ],
     ],
