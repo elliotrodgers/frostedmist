@@ -23,9 +23,14 @@ class PostsController extends Controller
         $this->storage = $storage;
     }
 
-    public function index()
+    public function posts()
     {
         $posts = $this->posts->getLatest();
         return view('posts', compact('posts'));
+    }
+
+    public function createPost()
+    {
+        return view('createPost');
     }
 }

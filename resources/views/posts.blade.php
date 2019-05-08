@@ -1,11 +1,26 @@
-
 @extends('layouts.app')
 
+@section('title', 'Posts')
+
 @section('content')
-    <h1>Posts</h1>
     @foreach ($posts as $post)
-        <h3>{{ $post['title'] }} ({{ date('d/m/Y', strtotime($post['date_created'])) }})</h3>
-        <p>{{ $post['body'] }}</p>
-        <img src="{{ $post['image'] }}" style="width:100%; max-width:500px; max-height:500px">
+        <div class="post">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="post-title">{{ $post['title'] }}</div>
+                    <p>{{ date('d/m/Y h:i', strtotime($post['date_created'])) }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <img class="post-image" src="{{ $post['image'] }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <p>{{ $post['body'] }}</p>
+                </div>
+            </div>
+        </div>
     @endforeach
 @endsection

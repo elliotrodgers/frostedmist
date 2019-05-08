@@ -7,12 +7,12 @@ Globals:
       Variables:
         APP_STORAGE: /tmp
 Resources:
-  HomePage:
+  frostedmist:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: homepage
+      FunctionName: frostedmist
       Description: ''
-      CodeUri: s3://frostedmist.co.uk/11f6aebcc62dd1f039c2f07c8296fa9f
+      CodeUri: s3://frostedmist.co.uk/051b5ec855208ad19f0439969e241792
       Handler: public/index.php
       Timeout: 30
       MemorySize: 1024
@@ -20,21 +20,21 @@ Resources:
       Layers:
       - arn:aws:lambda:eu-west-2:209497400698:layer:php-73-fpm:4
       Events:
-        HttpRoot:
+        GetPosts:
           Type: Api
           Properties:
             Path: /
-            Method: ANY
-        HttpSubPaths:
+            Method: GET
+        CreatePost:
           Type: Api
           Properties:
-            Path: /{proxy+}
-            Method: ANY
+            Path: /createPost
+            Method: GET
   Artisan:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: laravel-artisan
-      CodeUri: s3://frostedmist.co.uk/11f6aebcc62dd1f039c2f07c8296fa9f
+      CodeUri: s3://frostedmist.co.uk/051b5ec855208ad19f0439969e241792
       Handler: artisan
       Timeout: 120
       Runtime: provided

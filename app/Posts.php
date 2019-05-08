@@ -10,6 +10,6 @@ class Posts extends DynamoDbModel
 
     public function getLatest()
     {
-        return $this->limit(1)->get();
+        return $this->limit(2)->get();
     }
 }

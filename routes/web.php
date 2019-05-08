@@ -1,3 +1,4 @@
 <?php
 
-Route::get('/', 'PostsController@index');
+Route::get('/', 'PostsController@posts');
+Route::get('/createPost', 'PostsController@createPost');
