@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Posts;
-use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -12,21 +11,15 @@ class PostsController extends Controller
      */
     private $posts;
 
-    /**
-     * @var Storage
-     */
-    private $storage;
-
-    public function __construct(Posts $posts, Storage $storage)
+    public function __construct(Posts $posts)
     {
         $this->posts = $posts;
-        $this->storage = $storage;
     }
 
-    public function posts()
+    public function getPosts()
     {
         $posts = $this->posts->getLatest();
-        return view('posts', compact('posts'));
+        return view('getPosts', compact('posts'));
     }
 
     public function createPost()

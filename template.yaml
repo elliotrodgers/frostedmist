@@ -33,6 +33,11 @@ Resources:
                     Properties:
                         Path: /createPost
                         Method: GET
+                Login:
+                    Type: Api
+                    Properties:
+                        Path: /login
+                        Method: GET
     Artisan:
         Type: AWS::Serverless::Function
         Properties:
