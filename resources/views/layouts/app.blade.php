@@ -2,41 +2,38 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('layouts.head')
 @include('layouts.navbar')
-<body>
-<div class="container-fluid mt-4" style="color: #636b6f;">
+<body style="color: #636b6f;">
+<div class="container mt-4">
     <div class="row">
-        <div class="col-12 col-md-4" onclick="window.location = '/Prod/';" style="cursor: pointer">
+        <a class="col-12 col-md-4" title="gallery" href="{{ config('links.gallery') }}" style="text-decoration: none; color: #636b6f;">
             <h1><b>frostedmist</b></h1>
             <h4>pixel art and stories</h4>
-        </div>
+        </a>
         <div class="col-8 d-none d-md-block text-right">
-            <button type="button" class="btn btn-outline-primary m-1" onclick="window.location = '/Prod/'">Gallery</button>
-            <button type="button" class="btn btn-outline-primary m-1" onclick="window.location = 'login'">Login</button>
-            <button type="button" class="btn btn-outline-primary m-1" onclick="window.location = 'createPost'">Create Post</button>
-            <button type="button" class="btn btn-outline-primary m-1" title="patreon"
-                    onclick="window.open('https://patreon.com/frostedmist', '_blank')">
+            <a class="btn btn-outline-primary m-1" title="gallery" href="{{ config('links.gallery') }}">gallery</a>
+            <a class="btn btn-outline-primary m-1" title="login" href="{{ config('links.login') }}">login</a>
+            <a class="btn btn-outline-primary m-1" title="create post" href="{{ config('links.createPost') }}">create post</a>
+            <a class="btn btn-outline-primary m-1" title="patreon" href="https://patreon.com/frostedmist" target="_blank">
                 <span class="fab fa-patreon"></span>
-            </button>
-            <button type="button" class="btn btn-outline-primary m-1" title="twitter"
-                    onclick="window.open('https://twitter.com/frostedmist', '_blank')">
+            </a>
+            <a class="btn btn-outline-primary m-1" title="twitter" href="https://twitter.com/frostedmist" target="_blank">
                 <span class="fab fa-twitter"></span>
-            </button>
+            </a>
         </div>
     </div>
+</div>
+<div class="container-fluid mt-4">
     <div class="row">
         <div class="col-12">
             <hr>
         </div>
     </div>
-    @hasSection('title')
-    <div class="row">
-        <div class="col-md-6 offset-md-3 text-center">
-            <h4><b>@yield('title')</b></h4>
-        </div>
-    </div>
-    @endif
-    @yield('content')
-    @yield('scripts')
 </div>
+<div class="container mt-4">
+    @include('layouts.title')
+    @yield('content')
+</div>
+@include('layouts.scripts')
+@yield('scripts')
 </body>
 </html>

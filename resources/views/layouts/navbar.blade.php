@@ -30,16 +30,14 @@
 </div>
 <div class="sideNav d-md-none position-fixed">
     <div class="text-center" style="padding: 65px 13px 13px 13px">
-        <button type="button" class="btn btn-outline-primary btn-lg btn-block m-1" onclick="window.location = '/Prod/'">Gallery</button>
-        <button type="button" class="btn btn-outline-primary btn-lg btn-block m-1" onclick="window.location = 'login'">Login</button>
-        <button type="button" class="btn btn-outline-primary btn-lg btn-block m-1" onclick="window.location = 'createPost'">Create Post</button>
-        <button type="button" class="btn btn-outline-primary btn-lg m-1" title="patreon"
-                onclick="window.open('https://patreon.com/frostedmist', '_blank')">
+        <a class="btn btn-outline-primary btn-block m-1" title="gallery" href="{{ config('links.gallery') }}">gallery</a>
+        <a class="btn btn-outline-primary btn-block m-1" title="login" href="{{ config('links.login') }}">login</a>
+        <a class="btn btn-outline-primary btn-block m-1" title="create post" href="{{ config('links.createPost') }}">create post</a>
+        <a class="btn btn-outline-primary m-1" title="patreon" href="https://patreon.com/frostedmist" target="_blank">
             <span class="fab fa-patreon"></span>
-        </button>
-        <button type="button" class="btn btn-outline-primary btn-lg m-1" title="twitter"
-                onclick="window.open('https://twitter.com/frostedmist', '_blank')">
+        </a>
+        <a class="btn btn-outline-primary m-1" title="twitter" href="https://twitter.com/frostedmist" target="_blank">
             <span class="fab fa-twitter"></span>
-        </button>
+        </a>
     </div>
 </div>

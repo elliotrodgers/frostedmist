@@ -23,7 +23,7 @@ Resources:
             Layers:
                 - 'arn:aws:lambda:eu-west-2:209497400698:layer:php-73-fpm:4'
             Events:
-                GetPosts:
+                Posts:
                     Type: Api
                     Properties:
                         Path: /
@@ -32,7 +32,17 @@ Resources:
                     Type: Api
                     Properties:
                         Path: /createPost
-                        Method: GET
+                        Method: ANY
+                EditPost:
+                    Type: Api
+                    Properties:
+                        Path: /editPost/{id}
+                        Method: ANY
+                DeletePost:
+                    Type: Api
+                    Properties:
+                        Path: /deletePost
+                        Method: POST
                 Login:
                     Type: Api
                     Properties:

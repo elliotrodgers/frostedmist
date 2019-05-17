@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Posts;
 use Aws\S3\S3Client;
-use BaoPham\DynamoDb\RawDynamoDbQuery;
+use Illuminate\Http\Request;
 
-class PostsController extends Controller
+class DeletePostController extends Controller
 {
     /**
      * @var Posts
@@ -27,13 +27,18 @@ class PostsController extends Controller
         ]);
     }
 
-    public function get()
+    public function post(Request $request)
     {
-        $posts = $this->posts
-            ->decorate(function (RawDynamoDbQuery $raw) {
-                $raw->query['ScanIndexForward'] = true;
-            })
-            ->get();
-        return view('getPosts', compact('posts'));
+        $this->posts
+            ->where('pid', $request->input('pid'))
+            ->first()
+            ->delete();
+
+        $this->client->deleteObject([
+            'Bucket' => env('AWS_BUCKET'),
+            'Key'    => 'images/' . $request->input('image_name')
+        ]);
+
+        return;
     }
 }
