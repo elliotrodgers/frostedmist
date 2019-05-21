@@ -47,7 +47,12 @@ Resources:
                     Type: Api
                     Properties:
                         Path: /login
-                        Method: GET
+                        Method: ANY
+                Logout:
+                    Type: Api
+                    Properties:
+                        Path: /logout
+                        Method: ANY
     Artisan:
         Type: AWS::Serverless::Function
         Properties:

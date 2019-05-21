@@ -1,6 +1,8 @@
 <?php
 
-Route::get('/', 'PostsController@get')->name('gallery');;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', 'PostsController@get')->name('gallery');
 
 Route::get('/createPost', 'CreatePostController@get');
 Route::post('/createPost', 'CreatePostController@post');
@@ -10,4 +12,8 @@ Route::post('/editPost/{id}', 'EditPostController@post');
 
 Route::post('/deletePost', 'DeletePostController@post');
 
-Route::view('/login', 'login');
+Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@get']);
+Route::post('/login', ['as' => 'login', 'uses' => 'LoginController@post']);
+
+Route::get('/logout', ['as' => 'login', 'uses' => 'LogoutController@get']);
+

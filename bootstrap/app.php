@@ -18,7 +18,13 @@ $app = new Illuminate\Foundation\Application(
 /*
  * Allow overriding the storage path in production using an environment variable.
  */
-$app->useStoragePath($_ENV['APP_STORAGE'] ?? $app->storagePath());
+$directoryNames = ['/tmp/laravel/framework/sessions', '/tmp/laravel/framework/cache', '/tmp/laravel/framework/views'];
+foreach ($directoryNames as $directoryName) {
+    if (!is_dir($directoryName)) {
+        mkdir($directoryName, 0755, true);
+    }
+}
+$app->useStoragePath( '/tmp/laravel' );
 
 /*
 |--------------------------------------------------------------------------

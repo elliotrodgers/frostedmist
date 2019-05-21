@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-12 form-group">
                     <label for="image">Image</label>
-                    <img class="mb-3" id="image-preview" src="{{ env('CLOUDFRONT_URL') . $post['image_name'] }}" alt="{{ $post['title'] }}" width="100%">
+                    <img class="mb-3" id="image-preview" src="{{ config('links.cloudFront') . $post['image_name'] }}" alt="{{ $post['title'] }}" width="100%">
                     <input type="file" id="image" onchange="$('#image-preview').attr('src', window.URL.createObjectURL(this.files[0]));" width="100%">
                 </div>
                 <div class="col-12 form-group">

@@ -12,7 +12,7 @@ Resources:
     Properties:
       FunctionName: frostedmist
       Description: ''
-      CodeUri: s3://frostedmist.co.uk/a75e4f94f3929239ed1c1456d23c5027
+      CodeUri: s3://frostedmist.co.uk/8d92514b9fe1ca9ca96d6c2e489a5dbd
       Handler: public/index.php
       Timeout: 30
       MemorySize: 1024
@@ -44,12 +44,17 @@ Resources:
           Type: Api
           Properties:
             Path: /login
-            Method: GET
+            Method: ANY
+        Logout:
+          Type: Api
+          Properties:
+            Path: /logout
+            Method: ANY
   Artisan:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: laravel-artisan
-      CodeUri: s3://frostedmist.co.uk/a75e4f94f3929239ed1c1456d23c5027
+      CodeUri: s3://frostedmist.co.uk/8d92514b9fe1ca9ca96d6c2e489a5dbd
       Handler: artisan
       Timeout: 120
       Runtime: provided

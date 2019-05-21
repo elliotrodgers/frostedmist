@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
+@if ($posts->isEmpty())
+    @section('title', 'No Posts')
+@endif
+
 @section('content')
-    @if ($posts->isNotEmpty())
-        @foreach ($posts as $post)
-            <div class="row">
-                <div class="col-12 col-lg-8 offset-lg-2 mb-4">
-                    <h4 class="float-left"><b>{{ $post['title'] }}</b></h4>
+    @foreach ($posts as $post)
+        <div class="row">
+            <div class="col-12 col-lg-8 offset-lg-2 mb-4">
+                <h4 class="float-left"><b>{{ $post['title'] }}</b></h4>
+                @if (session('logged_in'))
                     <button type="button" class="btn btn-danger btn-sm ml-2 float-right" id="deletePost"
                             onclick="deletePost('{{ $post['pid'] }}', '{{ $post['image_name'] }}')">
                         <i class="fas fa-trash"></i>
@@ -13,27 +17,21 @@
                     <a class="btn btn-primary btn-sm ml-2 float-right" href="{{ config('links.editPost') . $post['pid'] }}">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
-                </div>
-                <div class="col-12 col-lg-8 offset-lg-2 mb-4 text-center">
-                    @if ($post['image_name'])
-                        <img src="{{ env('CLOUDFRONT_URL') . $post['image_name'] }}"
-                             title="{{ $post['title'] }}" data-body="{{ $post['body'] }}" width="100%"
-                             onclick="viewImage(this)" style="cursor: pointer; max-width: 500px;">
-                    @endif
-                </div>
-                <div class="col-12 col-lg-8 offset-lg-2 mb-4">
-                    <p class="mt-2 mb-2">{{ $post['body'] }}</p>
-                    <small>{{ date('d/m/Y H:i', strtotime($post['created_at'])) }}</small>
-                </div>
+                @endif
             </div>
-        @endforeach
-    @else
-        <div class="row">
-            <div class="col-12 text-center">
-                <h4><b>No Posts</b></h4>
+            <div class="col-12 col-lg-8 offset-lg-2 mb-4 text-center">
+                @if ($post['image_name'])
+                    <img src="{{ config('links.cloudFront') . $post['image_name'] }}"
+                         title="{{ $post['title'] }}" data-body="{{ $post['body'] }}" width="100%"
+                         onclick="viewImage(this)" style="cursor: pointer; max-width: 500px;">
+                @endif
+            </div>
+            <div class="col-12 col-lg-8 offset-lg-2 mb-4">
+                <p class="mt-2 mb-2">{{ $post['body'] }}</p>
+                <small>{{ date('d/m/Y H:i', strtotime($post['created_at'])) }}</small>
             </div>
         </div>
-    @endif
+    @endforeach
 @endsection
 
 @section('scripts')

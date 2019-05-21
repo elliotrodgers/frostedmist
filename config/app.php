@@ -175,7 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        BaoPham\DynamoDb\DynamoDbServiceProvider::class
+        BaoPham\DynamoDb\DynamoDbServiceProvider::class,
 
     ],
 

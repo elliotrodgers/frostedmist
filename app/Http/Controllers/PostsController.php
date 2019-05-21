@@ -22,7 +22,7 @@ class PostsController extends Controller
     {
         $this->posts = $posts;
         $this->client = new S3Client([
-            'region' => env('AWS_DEFAULT_REGION'),
+            'region' => env('AWS_DEFAULT_REGION', 'eu-west-2'),
             'version' => 'latest',
         ]);
     }
@@ -34,6 +34,7 @@ class PostsController extends Controller
                 $raw->query['ScanIndexForward'] = true;
             })
             ->get();
-        return view('getPosts', compact('posts'));
+
+        return view('gallery', compact('posts'));
     }
 }

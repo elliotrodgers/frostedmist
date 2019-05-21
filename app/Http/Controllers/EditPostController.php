@@ -6,6 +6,7 @@ use App\Posts;
 use Aws\S3\S3Client;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class EditPostController extends Controller
 {
@@ -30,6 +31,9 @@ class EditPostController extends Controller
 
     public function get(string $pid)
     {
+        if(!Session::get('logged_in')) {
+            return abort(401);
+        }
         $post = $this->posts->where('pid', $pid)->first();
         $post['pid'] = $pid;
         return view('editPost', compact('post'));

@@ -11,14 +11,23 @@
         </a>
         <div class="col-8 d-none d-md-block text-right">
             <a class="btn btn-outline-primary m-1" title="gallery" href="{{ config('links.gallery') }}">gallery</a>
-            <a class="btn btn-outline-primary m-1" title="login" href="{{ config('links.login') }}">login</a>
-            <a class="btn btn-outline-primary m-1" title="create post" href="{{ config('links.createPost') }}">create post</a>
+            @if (session('logged_in'))
+                <a class="btn btn-outline-primary m-1" title="create post" href="{{ config('links.createPost') }}">create post</a>
+            @endif
             <a class="btn btn-outline-primary m-1" title="patreon" href="https://patreon.com/frostedmist" target="_blank">
                 <span class="fab fa-patreon"></span>
             </a>
             <a class="btn btn-outline-primary m-1" title="twitter" href="https://twitter.com/frostedmist" target="_blank">
                 <span class="fab fa-twitter"></span>
             </a>
+            <a class="btn btn-outline-primary m-1" title="github" href="https://github.com/elliot-rodgers/frostedmist" target="_blank">
+                <i class="fab fa-github"></i>
+            </a>
+            @if (session('logged_in'))
+                <a class="btn btn-outline-primary m-1" title="logout" href="{{ config('links.logout') }}">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            @endif
         </div>
     </div>
 </div>
@@ -31,6 +40,7 @@
 </div>
 <div class="container mt-4">
     @include('layouts.title')
+    @include('layouts.errors')
     @yield('content')
 </div>
 @include('layouts.scripts')

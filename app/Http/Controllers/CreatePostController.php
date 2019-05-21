@@ -6,6 +6,7 @@ use App\Posts;
 use Aws\S3\S3Client;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CreatePostController extends Controller
 {
@@ -30,6 +31,9 @@ class CreatePostController extends Controller
 
     public function get()
     {
+        if(!Session::get('logged_in')) {
+            return abort(401);
+        }
         return view('createPost');
     }
 
