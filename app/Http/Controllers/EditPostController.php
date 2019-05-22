@@ -41,32 +41,30 @@ class EditPostController extends Controller
 
     public function post(Request $request)
     {
-        $this->posts->pid = $request->input('pid');
-        $this->posts->title = $request->input('title');
+        $image_name = $this->posts->where('pid', $request->input('pid'))->first()['image_name'];
 
-        $post = $this->posts->where('pid', $this->posts->pid)->first();
-
-        $image_name = $request->input('image_name');
-        if($image_name) {
-            $this->posts->image_name = Carbon::now()->timestamp . '_' . $image_name;
+        if($request->input('image_name')) {
             $this->client->deleteObject([
                 'Bucket' => env('AWS_BUCKET'),
-                'Key'    => 'images/' . $post['image_name']
+                'Key'    => 'images/' . $image_name
             ]);
-        } else {
-            $this->posts->image_name = $post['image_name'];
+            $image_name = Carbon::now()->timestamp . '_' . $request->input('image_name');
         }
 
-        $this->posts->body = $request->input('body');
-        $this->posts->update();
+        $this->posts->InsertUpdatePost(
+            $request->input('pid'),
+            $request->input('title'),
+            $image_name,
+            $request->input('body')
+        );
 
-        if(!$image_name) {
+        if(!$request->input('image_name')) {
             return 'false';
         }
 
         $cmd = $this->client->getCommand('PutObject', [
             'Bucket' => env('AWS_BUCKET'),
-            'Key' => 'images/' . $this->posts->image_name
+            'Key' => 'images/' . $image_name
         ]);
 
         return $this->client->createPresignedRequest($cmd, '+20 minutes')->getUri();

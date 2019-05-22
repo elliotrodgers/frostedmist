@@ -8,4 +8,13 @@ class Posts extends DynamoDbModel
 {
     protected $table = 'Posts';
     protected $primaryKey = 'pid';
+
+    public function InsertUpdatePost($pid, $title, $image_name, $body)
+    {
+        $this->pid = $pid;
+        $this->title = $title;
+        $this->image_name = $image_name;
+        $this->body = $body;
+        $this->save();
+    }
 }

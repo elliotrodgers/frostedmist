@@ -27,7 +27,7 @@ Resources:
                     Type: Api
                     Properties:
                         Path: /
-                        Method: GET
+                        Method: ANY
                 CreatePost:
                     Type: Api
                     Properties:
@@ -42,7 +42,7 @@ Resources:
                     Type: Api
                     Properties:
                         Path: /deletePost
-                        Method: POST
+                        Method: ANY
                 Login:
                     Type: Api
                     Properties:

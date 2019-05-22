@@ -27,7 +27,7 @@
                 @endif
             </div>
             <div class="col-12 col-lg-8 offset-lg-2 mb-4">
-                <p class="mt-2 mb-2">{{ $post['body'] }}</p>
+                <p class="mt-2 mb-2" style="white-space: pre-wrap;">{{ $post['body'] }}</p>
                 <small>{{ date('d/m/Y H:i', strtotime($post['created_at'])) }}</small>
             </div>
         </div>

@@ -41,11 +41,12 @@ class CreatePostController extends Controller
     {
         $image_name = Carbon::now()->timestamp . '_' . $request->input('image_name');
 
-        $this->posts->pid = uniqid();
-        $this->posts->title = $request->input('title');
-        $this->posts->image_name = $image_name;
-        $this->posts->body = $request->input('body');
-        $this->posts->save();
+        $this->posts->InsertUpdatePost(
+            uniqid(),
+            $request->input('title'),
+            $image_name,
+            $request->input('body')
+        );
 
         $cmd = $this->client->getCommand('PutObject', [
             'Bucket' => env('AWS_BUCKET'),
