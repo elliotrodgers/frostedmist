@@ -13,7 +13,9 @@ class Posts extends DynamoDbModel
     {
         $this->pid = $pid;
         $this->title = $title;
-        $this->image_name = $image_name;
+        if($image_name != null) {
+            $this->image_name = $image_name;
+        }
         $this->body = $body;
         $this->save();
     }

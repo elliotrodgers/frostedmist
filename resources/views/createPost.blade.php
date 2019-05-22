@@ -36,6 +36,7 @@
 
             var title = $('#title').val();
             var image = $('#image').prop('files')[0];
+            var image_name = null;
             var body = $('#body').val();
 
             var valid = true;
@@ -47,11 +48,10 @@
                 $('#title').removeClass('is-invalid');
             }
 
-            if(image == null) {
-                $('#image').addClass('is-invalid');
-                valid = false;
+            if(image !== undefined) {
+                image_name = image.name;
             } else {
-                $('#image').removeClass('is-invalid');
+                image_name = null;
             }
 
             if(body === '') {
@@ -69,10 +69,14 @@
                     method: 'POST',
                     data: {
                         title: title,
-                        image_name: image.name,
+                        image_name: image_name,
                         body: body
                     },
                     success: function (presignedUrl) {
+                        if(image === undefined) {
+                            window.location = "{{ config('links.gallery') }}";
+                            return;
+                        }
                         $.ajax({
                             url: presignedUrl,
                             type: 'PUT',

@@ -14,18 +14,20 @@
                             onclick="deletePost('{{ $post['pid'] }}', '{{ $post['image_name'] }}')">
                         <i class="fas fa-trash"></i>
                     </button>
-                    <a class="btn btn-primary btn-sm ml-2 float-right" href="{{ config('links.editPost') . $post['pid'] }}">
+                    <a class="btn btn-primary btn-sm ml-2 float-right"
+                       href="{{ config('links.editPost') . $post['pid'] }}">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                 @endif
             </div>
-            <div class="col-12 col-lg-8 offset-lg-2 mb-4 text-center">
-                @if ($post['image_name'])
+            @if ($post['image_name'])
+                <div class="col-12 col-lg-8 offset-lg-2 mb-4 text-center">
                     <img src="{{ config('links.cloudFront') . $post['image_name'] }}"
                          title="{{ $post['title'] }}" data-body="{{ $post['body'] }}" width="100%"
                          onclick="viewImage(this)" style="cursor: pointer; max-width: 500px;">
-                @endif
-            </div>
+
+                </div>
+            @endif
             <div class="col-12 col-lg-8 offset-lg-2 mb-4">
                 <p class="mt-2 mb-2" style="white-space: pre-wrap;">{{ $post['body'] }}</p>
                 <small>{{ date('d/m/Y H:i', strtotime($post['created_at'])) }}</small>
