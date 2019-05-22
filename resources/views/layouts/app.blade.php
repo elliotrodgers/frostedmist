@@ -35,7 +35,7 @@
     @include('layouts.errors')
     @yield('content')
 </div>
-<footer class="bg-dark text-white position-fixed" style="bottom: 0; width: 100%">
+<footer class="bg-dark text-white position-fixed" style="bottom: 0; width: 100%; z-index: 3;">
     <div class="container-fluid py-3">
         <div class="row">
             <div class="col-md-12 text-right small align-self-end">
