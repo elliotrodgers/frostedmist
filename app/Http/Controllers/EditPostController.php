@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Posts;
-use Aws\S3\S3Client;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -16,23 +15,14 @@ class EditPostController extends Controller
     private $posts;
 
     /**
-     * @var PostsController
+     * @var S3Controller
      */
-    private $postsController;
+    private $s3Controller;
 
-    /**
-     * @var S3Client
-     */
-    private $client;
-
-    public function __construct(Posts $posts, PostsController $postsController)
+    public function __construct(Posts $posts, S3Controller $s3Controller)
     {
         $this->posts = $posts;
-        $this->postsController = $postsController;
-        $this->client = new S3Client([
-            'region' => env('AWS_DEFAULT_REGION'),
-            'version' => 'latest',
-        ]);
+        $this->s3Controller = $s3Controller;
     }
 
     public function get(string $pid)
@@ -45,36 +35,46 @@ class EditPostController extends Controller
         return view('editPost', compact('post'));
     }
 
-    public function post(Request $request)
+    public function post(Request $request): array
     {
-        $image_names = $this->posts->where('pid', $request->input('pid'))->first()['image_names'];
-
-        if($image_names) {
-            foreach ($image_names as $image_name) {
-                $this->client->deleteObject([
-                    'Bucket' => env('AWS_BUCKET'),
-                    'Key'    => 'images/' . $image_name
-                ]);
-            }
-        }
-
+        // If new images
         $image_names = $request->input('image_names');
-        $image_presigned_urls = [];
+        $old_image_names = json_decode($request->input('old_image_names'));
 
         if($image_names) {
+
+            // Delete old images
+            $this->s3Controller->deleteImages(
+                $old_image_names
+            );
+
+            // Add timestamps to image names
             foreach ($image_names as &$image_name) {
                 $image_name = Carbon::now()->timestamp . '_' . $image_name;
-                $image_presigned_urls[] = $this->postsController->getPresignedUrl($image_name);
             }
+
+            // Update the post
+            $this->posts->insertUpdatePost(
+                $request->input('pid'),
+                $request->input('title'),
+                $image_names,
+                $request->input('body')
+            );
+
+            // Return with presigned urls to upload
+            return $this->s3Controller->createPresignedUrls(
+                $image_names
+            );
         }
 
+        // Update the post
         $this->posts->insertUpdatePost(
             $request->input('pid'),
             $request->input('title'),
-            $image_names,
+            $old_image_names,
             $request->input('body')
         );
 
-        return $image_presigned_urls;
+        return [];
     }
 }

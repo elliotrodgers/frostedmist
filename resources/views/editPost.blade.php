@@ -34,6 +34,7 @@
         </div>
     </div>
     <input type="hidden" id="pid" value="{{ $post['pid'] }}">
+    <input type="hidden" id="old-image-names" value="{{ json_encode($post['image_names'], true) }}">
 @endsection
 
 @section('scripts')
@@ -54,6 +55,7 @@
             var title = $('#title').val();
             var images = $('#image').prop('files');
             var image_names = [];
+            var old_image_names = $('#old-image-names').val();
             var body = $('#body').val();
 
             var valid = true;
@@ -90,25 +92,22 @@
                         pid: pid,
                         title: title,
                         image_names: image_names,
+                        old_image_names: old_image_names,
                         body: body
                     },
                     success: function (presignedUrls) {
-                        if(presignedUrls.length > 0) {
-                            for (var i = 0; i < presignedUrls.length; i++) {
-                                $.ajax({
-                                    url: presignedUrls[i],
-                                    type: 'PUT',
-                                    data: images[i],
-                                    contentType: images[i].type,
-                                    processData: false,
-                                })
-                            }
-                            $(document).ajaxStop(function () {
-                                window.location = "{{ config('links.gallery') }}";
-                            });
-                        } else {
-                            window.location = "{{ config('links.gallery') }}";
+                        for (var i = 0; i < presignedUrls.length; i++) {
+                            $.ajax({
+                                url: presignedUrls[i],
+                                type: 'PUT',
+                                data: images[i],
+                                contentType: images[i].type,
+                                processData: false,
+                            })
                         }
+                        $(document).ajaxStop(function () {
+                            window.location = "{{ config('links.gallery') }}";
+                        });
                     }
                 });
             }

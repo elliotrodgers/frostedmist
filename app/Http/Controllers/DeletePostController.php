@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Posts;
-use Aws\S3\S3Client;
 use Illuminate\Http\Request;
 
 class DeletePostController extends Controller
@@ -14,17 +13,14 @@ class DeletePostController extends Controller
     private $posts;
 
     /**
-     * @var S3Client
+     * @var S3Controller
      */
-    private $client;
+    private $s3Controller;
 
-    public function __construct(Posts $posts)
+    public function __construct(Posts $posts, S3Controller $s3Controller)
     {
         $this->posts = $posts;
-        $this->client = new S3Client([
-            'region' => env('AWS_DEFAULT_REGION'),
-            'version' => 'latest',
-        ]);
+        $this->s3Controller = $s3Controller;
     }
 
     public function post(Request $request)
@@ -34,17 +30,8 @@ class DeletePostController extends Controller
             ->first()
             ->delete();
 
-        $image_names = json_decode($request->input('image_names'));
-
-        if($image_names) {
-            foreach ($image_names as $image_name) {
-                $this->client->deleteObject([
-                    'Bucket' => env('AWS_BUCKET'),
-                    'Key' => 'images/' . $image_name
-                ]);
-            }
-        }
-
-        return;
+        return $this->s3Controller->deleteImages(
+            json_decode($request->input('image_names'))
+        );
     }
 }

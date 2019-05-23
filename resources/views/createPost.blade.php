@@ -84,22 +84,18 @@
                         body: body
                     },
                     success: function (presignedUrls) {
-                        if(presignedUrls.length > 0) {
-                            for (var i = 0; i < presignedUrls.length; i++) {
-                                $.ajax({
-                                    url: presignedUrls[i],
-                                    type: 'PUT',
-                                    data: images[i],
-                                    contentType: images[i].type,
-                                    processData: false,
-                                })
-                            }
-                            $(document).ajaxStop(function () {
-                                window.location = "{{ config('links.gallery') }}";
-                            });
-                        } else {
-                            window.location = "{{ config('links.gallery') }}";
+                        for (var i = 0; i < presignedUrls.length; i++) {
+                            $.ajax({
+                                url: presignedUrls[i],
+                                type: 'PUT',
+                                data: images[i],
+                                contentType: images[i].type,
+                                processData: false,
+                            })
                         }
+                        $(document).ajaxStop(function () {
+                            window.location = "{{ config('links.gallery') }}";
+                        });
                     }
                 });
             }
