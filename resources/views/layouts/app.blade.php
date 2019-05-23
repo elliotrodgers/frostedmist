@@ -1,11 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-100">
 @include('layouts.head')
-<style>
-    html, body {
-        height: 100%;
-    }
-</style>
 <body style="color: #636b6f;">
 <header class="mt-4">
     @include('layouts.navbar')

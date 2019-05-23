@@ -14,7 +14,8 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "mnapoli/bref": "^0.3.8"
+        "mnapoli/bref": "^0.3.8",
+        "ext-json": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -9,12 +9,12 @@ class Posts extends DynamoDbModel
     protected $table = 'Posts';
     protected $primaryKey = 'pid';
 
-    public function InsertUpdatePost($pid, $title, $image_name, $body)
+    public function insertUpdatePost($pid, $title, $image_names, $body)
     {
         $this->pid = $pid;
         $this->title = $title;
-        if($image_name != null) {
-            $this->image_name = $image_name;
+        if($image_names != null) {
+            $this->image_names = $image_names;
         }
         $this->body = $body;
         $this->save();

@@ -16,17 +16,14 @@ class CreatePostController extends Controller
     private $posts;
 
     /**
-     * @var S3Client
+     * @var PostsController
      */
-    private $client;
+    private $postsController;
 
-    public function __construct(Posts $posts)
+    public function __construct(Posts $posts, PostsController $postsController)
     {
         $this->posts = $posts;
-        $this->client = new S3Client([
-            'region' => env('AWS_DEFAULT_REGION'),
-            'version' => 'latest',
-        ]);
+        $this->postsController = $postsController;
     }
 
     public function get()
@@ -37,30 +34,25 @@ class CreatePostController extends Controller
         return view('createPost');
     }
 
-    public function post(Request $request): string
+    public function post(Request $request)
     {
-        $image_name = $request->input('image_name');
+        $image_names = $request->input('image_names');
+        $image_presigned_urls = [];
 
-        if($request->input('image_name') != null) {
-            $image_name = Carbon::now()->timestamp . '_' . $request->input('image_name');
+        if($image_names) {
+            foreach ($image_names as &$image_name) {
+                $image_name = Carbon::now()->timestamp . '_' . $image_name;
+                $image_presigned_urls[] = $this->postsController->getPresignedUrl($image_name);
+            }
         }
 
-        $this->posts->InsertUpdatePost(
+        $this->posts->insertUpdatePost(
             uniqid(),
             $request->input('title'),
-            $image_name,
+            $image_names,
             $request->input('body')
         );
 
-        if($request->input('image_name') == null) {
-            return 'false';
-        }
-
-        $cmd = $this->client->getCommand('PutObject', [
-            'Bucket' => env('AWS_BUCKET'),
-            'Key' => 'images/' . $image_name
-        ]);
-
-        return $this->client->createPresignedRequest($cmd, '+20 minutes')->getUri();
+        return $image_presigned_urls;
     }
 }

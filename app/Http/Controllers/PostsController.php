@@ -37,4 +37,14 @@ class PostsController extends Controller
 
         return view('gallery', compact('posts'));
     }
+
+    public function getPresignedUrl($image_name)
+    {
+        $cmd = $this->client->getCommand('PutObject', [
+            'Bucket' => env('AWS_BUCKET'),
+            'Key' => 'images/' . $image_name
+        ]);
+
+        return (string) $this->client->createPresignedRequest($cmd, '+20 minutes')->getUri();
+    }
 }

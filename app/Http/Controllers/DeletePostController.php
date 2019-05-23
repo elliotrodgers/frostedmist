@@ -34,10 +34,16 @@ class DeletePostController extends Controller
             ->first()
             ->delete();
 
-        $this->client->deleteObject([
-            'Bucket' => env('AWS_BUCKET'),
-            'Key'    => 'images/' . $request->input('image_name')
-        ]);
+        $image_names = json_decode($request->input('image_names'));
+
+        if($image_names) {
+            foreach ($image_names as $image_name) {
+                $this->client->deleteObject([
+                    'Bucket' => env('AWS_BUCKET'),
+                    'Key' => 'images/' . $image_name
+                ]);
+            }
+        }
 
         return;
     }

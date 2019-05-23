@@ -12,9 +12,14 @@
     <div class="row">
         <div class="col-md-6 offset-md-3 form-group">
             <label for="image">Image</label>
-            <img class="mb-3" id="image-preview" src="{{ config('links.cloudFront') . $post['image_name'] }}" width="100%">
-            <br>
-            <input type="file" name="image" id="image" accept="image/*" onchange="$('#image-preview').attr('src', window.URL.createObjectURL(this.files[0]));" width="100%">
+            <div id="image-previews">
+                @if ($post['image_names'])
+                    @foreach($post['image_names'] as $image_name)
+                        <img class="mb-3" id="image-preview" src="{{ config('links.cloudFront') . $image_name }}" width="100%">
+                    @endforeach
+                @endif
+            </div>
+            <input type="file" name="image" id="image" accept="image/*" onchange="showImagePreviews(this.files)" width="100%" multiple>
         </div>
     </div>
     <div class="row">
@@ -29,17 +34,26 @@
         </div>
     </div>
     <input type="hidden" id="pid" value="{{ $post['pid'] }}">
-    <input type="hidden" id="image-name" value="{{ $post['image_name'] }}">
 @endsection
 
 @section('scripts')
     <script>
+
+        function showImagePreviews(images) {
+
+            var image_previews = '';
+            for (var i = 0; i < images.length; i++) {
+                image_previews += '<img class="mb-3" id="image-preview" src="' + window.URL.createObjectURL(images[i]) + '" width="100%">'
+            }
+            $("#image-previews").empty().append(image_previews);
+        }
+
         function edit() {
 
             var pid = $('#pid').val();
             var title = $('#title').val();
-            var image = $('#image').prop('files')[0];
-            var image_name = null;
+            var images = $('#image').prop('files');
+            var image_names = [];
             var body = $('#body').val();
 
             var valid = true;
@@ -51,8 +65,12 @@
                 $('#title').removeClass('is-invalid');
             }
 
-            if(image !== undefined) {
-                image_name = image.name;
+            if(images !== undefined) {
+                for (var i = 0; i < images.length; i++) {
+                    image_names.push(images[i].name);
+                }
+            } else {
+                image_names = [];
             }
 
             if(body === '') {
@@ -71,24 +89,20 @@
                     data: {
                         pid: pid,
                         title: title,
-                        image_name: image_name,
+                        image_names: image_names,
                         body: body
                     },
-                    success: function (presignedUrl) {
-                        if(image === undefined) {
-                            window.location = "{{ config('links.gallery') }}";
-                            return;
+                    success: function (presignedUrls) {
+                        for (var i = 0; i < presignedUrls.length; i++) {
+                            $.ajax({
+                                url: presignedUrls[i],
+                                type: 'PUT',
+                                data: images[i],
+                                contentType: images[i].type,
+                                processData: false,
+                            });
                         }
-                        $.ajax({
-                            url: presignedUrl,
-                            type: 'PUT',
-                            data: image,
-                            contentType: image.type,
-                            processData: false,
-                            success: function (response) {
-                                window.location = "{{ config('links.gallery') }}";
-                            }
-                        });
+                        window.location = "{{ config('links.gallery') }}";
                     }
                 });
             }
